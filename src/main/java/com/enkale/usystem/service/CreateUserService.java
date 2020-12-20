@@ -4,6 +4,9 @@ import com.enkale.usystem.domain.User;
 import com.enkale.usystem.dto.CreateUserRequestDTO;
 import com.enkale.usystem.dto.CreateUserResponseDTO;
 import com.enkale.usystem.dto.ResponseStatus;
+import com.enkale.usystem.util.CommonMessages;
+import com.enkale.usystem.util.CommonReasons;
+import com.enkale.usystem.util.DB;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 
@@ -11,7 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-public class UserService {
+public class CreateUserService {
     private static int id = 0;
 
     public CreateUserResponseDTO createUser(CreateUserRequestDTO requestDTO) {
@@ -19,8 +22,8 @@ public class UserService {
 
         if(requestDTO == null) {
             responseDTO.setStatus(ResponseStatus.ERROR);
-            responseDTO.setMessage("Unable to create user");
-            responseDTO.setReason("Request is null");
+            responseDTO.setMessage(CommonMessages.UNABLE_TO_PROCESS_REQUEST);
+            responseDTO.setReason(CommonReasons.REQUEST_IS_NULL);
             return responseDTO;
         }
 
@@ -43,8 +46,8 @@ public class UserService {
         // If we got some errors
         if(!errorBuilder.toString().isEmpty()) {
             responseDTO.setStatus(ResponseStatus.ERROR);
-            responseDTO.setMessage("Unable to process the fields: " + errorBuilder.toString());
-            responseDTO.setReason("Field(s) are either empty or null");
+            responseDTO.setMessage(CommonMessages.UNABLE_TO_PROCESS_FIELDS + errorBuilder.toString());
+            responseDTO.setReason(CommonReasons.FIELDS_ARE_EMPTY_OR_NULL);
             return responseDTO;
         }
 
@@ -69,9 +72,11 @@ public class UserService {
 
         user.setPassword(hashedPassword);
 
+        // Add user to database
+        DB.users.add(user);
 
         responseDTO.setStatus(ResponseStatus.SUCCESS);
-        responseDTO.setMessage("User created");
+        responseDTO.setMessage(CommonMessages.ITEM_CREATED);
         responseDTO.setUser(user);
 
 

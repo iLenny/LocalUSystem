@@ -4,6 +4,8 @@ import com.enkale.usystem.domain.User;
 import com.enkale.usystem.dto.CreateUserRequestDTO;
 import com.enkale.usystem.dto.CreateUserResponseDTO;
 import com.enkale.usystem.dto.ResponseStatus;
+import com.enkale.usystem.util.CommonMessages;
+import com.enkale.usystem.util.CommonReasons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,8 +13,8 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserServiceTest {
-    private UserService service;
+class CreateUserServiceTest {
+    private CreateUserService service;
     private CreateUserRequestDTO oneEmptyFieldRequest;
     private CreateUserRequestDTO oneNullFieldRequest;
     private CreateUserRequestDTO someEmptyFieldRequest;
@@ -24,7 +26,7 @@ class UserServiceTest {
     @BeforeEach
     public void setupBeforeAll() {
 
-        service = new UserService();
+        service = new CreateUserService();
 
         // Please avoid making changes to the below request samples
         // as the test cases depends on it
@@ -101,15 +103,15 @@ class UserServiceTest {
     }
 
     @Test
-    public void createUser_whenRequestIsNull_returnUnableToCreateUserAsMessage_test() {
+    public void createUser_whenRequestIsNull_returnUnableToProcessRequestAsMessage_test() {
         CreateUserResponseDTO responseDTO = service.createUser(null);
-        assertEquals("Unable to create user", responseDTO.getMessage());
+        assertEquals(CommonMessages.UNABLE_TO_PROCESS_REQUEST, responseDTO.getMessage());
     }
 
     @Test
     public void createUser_whenRequestIsNull_returnRequestIsNullAsReason_test() {
         CreateUserResponseDTO responseDTO = service.createUser(null);
-        assertEquals("Request is null", responseDTO.getReason());
+        assertEquals(CommonReasons.REQUEST_IS_NULL, responseDTO.getReason());
     }
 
     @Test
@@ -125,7 +127,7 @@ class UserServiceTest {
         CreateUserResponseDTO responseDTO = service.createUser(requestDTO);
         StringBuilder expectedMessageBuilder = new StringBuilder();
 
-        expectedMessageBuilder.append("Unable to process the fields: ");
+        expectedMessageBuilder.append(CommonMessages.UNABLE_TO_PROCESS_FIELDS);
         expectedMessageBuilder.append("firstName ");
         expectedMessageBuilder.append("lastName ");
         expectedMessageBuilder.append("dob ");
@@ -145,7 +147,7 @@ class UserServiceTest {
 
         StringBuilder expectedMessageBuilder = new StringBuilder();
 
-        expectedMessageBuilder.append("Unable to process the fields: ");
+        expectedMessageBuilder.append(CommonMessages.UNABLE_TO_PROCESS_FIELDS);
         expectedMessageBuilder.append("firstName ");
         expectedMessageBuilder.append("lastName ");
         expectedMessageBuilder.append("email ");
@@ -163,7 +165,7 @@ class UserServiceTest {
         CreateUserResponseDTO responseDTO = service.createUser(requestDTO);
         StringBuilder expectedMessageBuilder = new StringBuilder();
 
-        expectedMessageBuilder.append("Unable to process the fields: ");
+        expectedMessageBuilder.append(CommonMessages.UNABLE_TO_PROCESS_FIELDS);
         expectedMessageBuilder.append("firstName ");
         assertEquals(expectedMessageBuilder.toString(), responseDTO.getMessage());
 
@@ -176,7 +178,7 @@ class UserServiceTest {
     public void createUser_whenRequestHasEmptyOrNullFields_returnFieldsAreEitherEmptyOrNullAsReason_test() {
         CreateUserRequestDTO requestDTO = oneEmptyFieldRequest;
         CreateUserResponseDTO responseDTO = service.createUser(requestDTO);
-        assertEquals("Field(s) are either empty or null", responseDTO.getReason());
+        assertEquals(CommonReasons.FIELDS_ARE_EMPTY_OR_NULL, responseDTO.getReason());
     }
 
     @Test
