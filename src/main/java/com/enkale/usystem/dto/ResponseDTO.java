@@ -1,15 +1,18 @@
 package com.enkale.usystem.dto;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ResponseDTO {
     private ResponseStatus status;
     private String message;
     private String reason;
-    private LocalDateTime timeStamp;
+    private String timeStamp;
 
     public ResponseDTO() {
-        this.timeStamp = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss z");
+        this.timeStamp = ZonedDateTime.now().format(formatter);
     }
 
     public ResponseDTO(ResponseStatus status, String message) {
@@ -25,7 +28,7 @@ public class ResponseDTO {
         this.reason = reason;
     }
 
-    public ResponseDTO(ResponseStatus status, String message, String reason, LocalDateTime timeStamp) {
+    public ResponseDTO(ResponseStatus status, String message, String reason, String timeStamp) {
         this.status = status;
         this.message = message;
         this.reason = reason;
@@ -59,11 +62,11 @@ public class ResponseDTO {
         return this;
     }
 
-    public LocalDateTime getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public ResponseDTO setTimeStamp(LocalDateTime timeStamp) {
+    public ResponseDTO setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
         return this;
     }
