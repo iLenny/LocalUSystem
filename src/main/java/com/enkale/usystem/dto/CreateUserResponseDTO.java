@@ -22,10 +22,7 @@ public class CreateUserResponseDTO extends ResponseDTO{
 
     @Override
     public String toString() {
-        return "CreateUserResponseDTO{" +
-                "status=" + super.getStatus() +
-                ", message=" + super.getMessage() +
-                ", reason=" + super.getReason() +
+        return "CreateUserResponseDTO{" + super.toString() +
                 ", user=" + user +
                 '}';
     }
